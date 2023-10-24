@@ -33,7 +33,7 @@ variable "script_destination" {
   type        = string
   default     = "/tmp/ansible_installer.sh"
 }
-variable scfile{
-    type = string
-    default = "./scripts/ansible_installer.sh"
+variable "scfile" {
+  type    = string
+  default = "./scripts/ansible_installer.sh"
 }

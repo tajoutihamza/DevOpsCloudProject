@@ -85,8 +85,8 @@ resource "azurerm_linux_virtual_machine" "master_vm" {
     version   = "latest"
   }
 
-  computer_name  = "masterk8s"
-  admin_username = var.username
+  computer_name                   = "masterk8s"
+  admin_username                  = var.username
   admin_password                  = var.password
   disable_password_authentication = "false"
   # admin_ssh_key {
@@ -97,4 +97,22 @@ resource "azurerm_linux_virtual_machine" "master_vm" {
   boot_diagnostics {
     storage_account_uri = azurerm_storage_account.master_account.primary_blob_endpoint
   }
+
+  provisioner "file" {
+    source      = var.script_source
+    destination = var.script_destination
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /tmp/ansible_installer.sh",
+      "sudo /tmp/ansible_installer.sh",
+    ]
+  }
+  connection {
+    type     = "ssh"
+    user     = var.username
+    password = var.password
+    host     = azurerm_linux_virtual_machine.master_vm.public_ip_address
+  }
+
 }

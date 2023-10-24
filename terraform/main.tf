@@ -91,8 +91,8 @@ resource "azurerm_linux_virtual_machine" "vm_k8s" {
     name                 = "secondosdisks${count.index}"
   }
 
-  computer_name  = "secondk8s${count.index}"
-  admin_username = var.username
+  computer_name                   = "secondk8s${count.index}"
+  admin_username                  = var.username
   admin_password                  = var.password
   disable_password_authentication = "false"
 
