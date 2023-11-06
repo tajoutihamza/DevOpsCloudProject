@@ -99,13 +99,32 @@ resource "azurerm_linux_virtual_machine" "master_vm" {
   }
 
   provisioner "file" {
-    source      = var.script_source
-    destination = var.script_destination
+
+    source      = var.docker_script_source
+    destination = var.docker_script_destination
+  }
+  provisioner "file" {
+
+    source      = var.ansible_script_source
+    destination = var.ansible_script_destination
+  }
+  provisioner "file" {
+
+    source      = var.kubernetes_script_source
+    destination = var.kubernetes_script_destination
+  }
+  provisioner "file" {
+
+    source      = var.master_init_script_source
+    destination = var.master_init_script_destination
   }
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /tmp/ansible_installer.sh",
+      "chmod +x /tmp/*.sh",
       "sudo /tmp/ansible_installer.sh",
+      "sudo /tmp/docker_installer.sh",
+      "sudo /tmp/kubernetes_nodes_setup.sh",
+      "sudo /tmp/master_kubernetes_init.sh",
     ]
   }
   connection {

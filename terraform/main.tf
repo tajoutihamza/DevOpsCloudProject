@@ -99,4 +99,29 @@ resource "azurerm_linux_virtual_machine" "vm_k8s" {
   boot_diagnostics {
     storage_account_uri = azurerm_storage_account.master_account.primary_blob_endpoint
   }
+
+  provisioner "file" {
+
+    source      = var.docker_script_source
+    destination = var.docker_script_destination
+  }
+  provisioner "file" {
+
+    source      = var.kubernetes_script_source
+    destination = var.kubernetes_script_destination
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /tmp/*.sh",
+      "sudo /tmp/docker_installer.sh",
+      "sudo /tmp/kubernetes_nodes_setup.sh",
+    ]
+  }
+  connection {
+    type     = "ssh"
+    user     = var.username
+    password = var.password
+    host     = self.public_ip_address
+  }
+
 }
