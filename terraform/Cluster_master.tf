@@ -8,18 +8,17 @@ resource "azurerm_public_ip" "master_public_ip" {
 
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "master_nsg" {
-  name                = "myNetworkSecurityGroup"
+  name                = "NSGk8s"
   location            = azurerm_resource_group.rg_k8s.location
   resource_group_name = azurerm_resource_group.rg_k8s.name
-
   security_rule {
-    name                       = "SSH"
-    priority                   = 1001
+    name                       = "allowALL"
+    priority                   = 100
     direction                  = "Inbound"
     access                     = "Allow"
-    protocol                   = "Tcp"
+    protocol                   = "*"
     source_port_range          = "*"
-    destination_port_range     = "22"
+    destination_port_range     = "*"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
