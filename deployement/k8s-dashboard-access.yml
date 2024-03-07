@@ -33,8 +33,6 @@ spec:
     - 10.0.2.4
     - 10.0.2.5
     - 10.0.2.6
-status:
-  loadBalancer: {}
 ---
 apiVersion: v1
 kind: ServiceAccount
